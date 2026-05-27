@@ -21,8 +21,13 @@ app.use(express.urlencoded({ extended: true }));
     await db.authenticate();
     console.log('Database connected successfully');
 
-    await db.sync({ alter: true });
-    console.log('Database synced');
+    // Prevent heavy sync alter operations on Vercel unless explicitly requested
+    if (!process.env.VERCEL || process.env.SYNC_DATABASE === 'true') {
+      await db.sync({ alter: true });
+      console.log('Database synced');
+    } else {
+      console.log('Database sync skipped on Vercel (SYNC_DATABASE is not set to true)');
+    }
   } catch (error) {
     console.error('Database connection failed:', error);
   }
