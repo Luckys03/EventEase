@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../api";
 
 function Login({ onAuthSuccess }) {
@@ -69,6 +69,12 @@ function Login({ onAuthSuccess }) {
         </form>
 
         <p className="footnote">Demo tip: try the admin credentials provided in docs.</p>
+        <p className="footnote" style={{ textAlign: "center", marginTop: "8px" }}>
+          Don't have an account?{" "}
+          <Link to="/register" style={{ color: "#a5b4fc", fontWeight: "600", textDecoration: "none" }}>
+            Sign Up
+          </Link>
+        </p>
       </div>
     </div>
   );

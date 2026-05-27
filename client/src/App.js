@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import api from "./api";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import AddVenue from "./pages/AddVenue";
 import Booking from "./pages/Booking";
 import MyBookings from "./pages/MyBookings";
@@ -197,6 +198,17 @@ function App() {
               <Navigate to="/" replace />
             ) : (
               <Login onAuthSuccess={handleAuthSuccess} />
+            )
+          }
+        />
+
+        <Route
+          path="/register"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/" replace />
+            ) : (
+              <Register onAuthSuccess={handleAuthSuccess} />
             )
           }
         />

@@ -8,6 +8,7 @@
     "server": "nodemon server.js",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm install --prefix client && npm run build --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -20,7 +21,8 @@
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
     "razorpay": "^2.9.6",
-    "sequelize": "^6.31.1"
+    "sequelize": "^6.31.1",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "concurrently": "^8.0.1",

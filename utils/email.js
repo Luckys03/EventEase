@@ -20,7 +20,7 @@ const hashResetToken = (resetToken) => {
  * In production, integrate with email service like SendGrid, Nodemailer, etc.
  */
 const sendPasswordResetEmail = async (user, resetToken) => {
-  const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:3000'}/reset-password/${resetToken}`;
+  const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:30003'}/reset-password/${resetToken}`;
   
   console.log(`
     ====================

@@ -32,11 +32,11 @@ const Venue = db.define('Venue', {
     allowNull: false
   },
   amenities: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: db.options.dialect === 'postgres' ? DataTypes.ARRAY(DataTypes.STRING) : DataTypes.JSON,
     defaultValue: []
   },
   images: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: db.options.dialect === 'postgres' ? DataTypes.ARRAY(DataTypes.STRING) : DataTypes.JSON,
     defaultValue: []
   },
   isAvailable: {

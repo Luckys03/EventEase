@@ -28,23 +28,41 @@ app.use(express.urlencoded({ extended: true }));
   }
 })();
 
+const path = require('path');
+
 // =====================
 // Routes
 // =====================
-app.get('/', (req, res) => {
-  res.send('EventEase API is running...');
-});
-
 // API routes
 app.use('/api/users', require('./routes/users'));
 app.use('/api/venues', require('./routes/venues'));
 app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/vendors', require('./routes/vendors'));
+app.use('/api/estimates', require('./routes/estimates'));
+app.use('/api/notifications', require('./routes/notifications'));
+
+// Serve Static Assets in Production (Vercel)
+if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+  // Set static folder
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.send('EventEase API is running...');
+  });
+}
 
 // =====================
 // Start Server
 // =====================
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
