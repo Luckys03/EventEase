@@ -3,8 +3,10 @@ const path = require('path');
 
 let sequelize;
 
-if (process.env.DATABASE_URL) {
-  sequelize = new Sequelize(process.env.DATABASE_URL, {
+const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+
+if (dbUrl) {
+  sequelize = new Sequelize(dbUrl, {
     dialect: 'postgres',
     logging: false,
     dialectOptions: {
@@ -21,9 +23,9 @@ if (process.env.DATABASE_URL) {
     }
   });
 } else if (process.env.VERCEL) {
-  // If running on Vercel but DATABASE_URL is missing, we must NOT use SQLite (which causes read-only filesystem crash)
+  // If running on Vercel but both DATABASE_URL and POSTGRES_URL are missing, we must NOT use SQLite (which causes read-only filesystem crash)
   // We initialize a placeholder PostgreSQL connection to allow cold-starts to load successfully and print warnings.
-  console.warn('WARNING: DATABASE_URL environment variable is not configured in Vercel. Please add it to your Project Settings.');
+  console.warn('WARNING: Neither DATABASE_URL nor POSTGRES_URL environment variables are configured in Vercel. Please add/link a database in your Project Settings.');
   sequelize = new Sequelize('postgres://dummy_user:dummy_pass@localhost:5432/dummy_db', {
     dialect: 'postgres',
     logging: false,
