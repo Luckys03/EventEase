@@ -91,9 +91,11 @@ function App() {
   );
 
   useEffect(() => {
+    const currentPendingTimers = pendingConfirmTimers.current;
+    const currentToastTimers = toastTimers.current;
     return () => {
-      Object.values(pendingConfirmTimers.current).forEach((timer) => clearTimeout(timer));
-      Object.values(toastTimers.current).forEach((timer) => clearTimeout(timer));
+      Object.values(currentPendingTimers).forEach((timer) => clearTimeout(timer));
+      Object.values(currentToastTimers).forEach((timer) => clearTimeout(timer));
     };
   }, []);
 
