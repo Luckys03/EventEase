@@ -3,7 +3,11 @@ const path = require('path');
 
 let sequelize;
 
-const dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+let dbUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.POSTGRES_URL_NON_POOLING;
+
+if (dbUrl && dbUrl.startsWith('postgresql://')) {
+  dbUrl = dbUrl.replace('postgresql://', 'postgres://');
+}
 
 if (dbUrl) {
   sequelize = new Sequelize(dbUrl, {
