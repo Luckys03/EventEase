@@ -27,18 +27,12 @@ if (dbUrl) {
     }
   });
 } else if (process.env.VERCEL) {
-  // If running on Vercel but both DATABASE_URL and POSTGRES_URL are missing, we must NOT use SQLite (which causes read-only filesystem crash)
-  // We initialize a placeholder PostgreSQL connection to allow cold-starts to load successfully and print warnings.
-  console.warn('WARNING: Neither DATABASE_URL nor POSTGRES_URL environment variables are configured in Vercel. Please add/link a database in your Project Settings.');
-  sequelize = new Sequelize('postgres://dummy_user:dummy_pass@localhost:5432/dummy_db', {
-    dialect: 'postgres',
-    logging: false,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      }
-    }
+  // If running on Vercel but both DATABASE_URL and POSTGRES_URL are missing, we fallback to SQLite in the writable /tmp directory
+  console.warn('WARNING: Neither DATABASE_URL nor POSTGRES_URL environment variables are configured in Vercel. Falling back to SQLite in /tmp.');
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: '/tmp/database.sqlite',
+    logging: false
   });
 } else if (process.env.DB_HOST && process.env.DB_HOST !== 'localhost') {
   // If explicitly configured to a custom host (other than localhost), use PostgreSQL parameters

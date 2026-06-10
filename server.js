@@ -4,6 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./config/database');
 
+// Import models to ensure associations are registered
+require('./models');
+
 const app = express();
 
 // =====================
